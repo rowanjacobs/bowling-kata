@@ -16,9 +16,29 @@ class GameTest(unittest.TestCase):
         game = Game()
         score = 5
         game.roll(score)
-        pins = 7
+        pins = 3
         game.roll(pins)
         self.assertEqual(game.score, score+pins)
+
+    def test_roll_advances_frame(self):
+        game = Game()
+        self.assertEqual(game.frame, 1)
+        game.roll(1)
+        self.assertEqual(game.frame, 1)
+        game.roll(1)
+        self.assertEqual(game.frame, 2)
+
+    def test_limit_roll_to_10(self):
+        game = Game()
+        with self.assertRaises(ValueError):
+            game.roll(11)
+
+    # can't roll above 10 in a frame
+    def test_limit_frame_to_10(self):
+        game = Game()
+        game.roll(9)
+        with self.assertRaises(ValueError):
+            game.roll(2)
 
     # spare
     def test_roll_spare(self):
