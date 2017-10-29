@@ -22,11 +22,11 @@ class GameTest(unittest.TestCase):
 
     def test_roll_advances_frame(self):
         game = Game()
-        self.assertEqual(game.frame, 1)
+        self.assertEqual(game.frame, 0)
+        game.roll(1)
+        self.assertEqual(game.frame, 0)
         game.roll(1)
         self.assertEqual(game.frame, 1)
-        game.roll(1)
-        self.assertEqual(game.frame, 2)
 
     def test_limit_roll_to_10(self):
         game = Game()
@@ -39,6 +39,14 @@ class GameTest(unittest.TestCase):
         game.roll(9)
         with self.assertRaises(ValueError):
             game.roll(2)
+
+    # can't roll past the 10th frame
+    def test_limit_to_10_frames(self):
+        game = Game()
+        for i in range(1, 20):
+            game.roll(1)
+        with self.assertRaises(IndexError):
+            game.roll(1)
 
     # spare
     def test_roll_spare(self):
